@@ -1,3 +1,4 @@
-module.exports = class Term extends Backbone.Model
+Model = require './model'
+module.exports = class Term extends Model
   defaults:
     term: 'keyword'
