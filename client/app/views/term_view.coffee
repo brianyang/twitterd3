@@ -15,15 +15,25 @@ module.exports = class TermView extends View
     @model.view = this
     @model.bind 'change', @render
 
+
   termBtnEvent: ->
-    #console.log 'term btn event'
     termInputVal = $('#term-input').val()
-    #@model.set({term:termInputVal})
-    #console.log 'at model' + @mode
-    #console.log application
-    #console.log application.terms
     @model.set({searchword:termInputVal})
-    console.log @model.attributes.term
+    @searchTweets()
+
+  searchTweets: ->
+    console.log 'search tweets'
+
+    #$.getJSON "http://search.twitter.com/search.json?callback=?", q: @model.get('searchword'), (data) ->
+    $.getJSON "/javascripts/search.json", (data) ->
+      #console.log data
+      data.results.forEach (tweet) ->
+        fromHandle = tweet.from_user
+        match = application.users.where({handle: fromHandle})
+        #console.log match
+        application.users.add handle:fromHandle if not match.length
+        #console.log fromHandle if not match.length
+
 
   getRenderData: ->
     {

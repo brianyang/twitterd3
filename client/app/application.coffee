@@ -6,7 +6,7 @@ Application =
     HomeView = require 'views/home_view'
     TermView = require 'views/term_view'
     UsersView = require 'views/users_view'
-    TweetView = require 'views/tweet_view'
+    #TweetView = require 'views/tweet_view'
 
     # Ideally, initialized classes should be kept in controllers & mediator.
     # If you're making big webapp, here's more sophisticated skeleton
@@ -15,7 +15,7 @@ Application =
     @homeView = new HomeView()
     @termView = new TermView()
     @usersView = new UsersView()
-    @tweetView = new TweetView()
+    #@tweetView = new TweetView()
     #console.log 'app'
     #console.log @termView
 

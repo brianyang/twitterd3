@@ -10,23 +10,16 @@ module.exports = class UsersView extends View
 
   initialize: ->
     fakeUsers = ['@fakeuser', '@bag', 'kitten']
-    application.users.bind 'all', @renderD3
+    application.users.bind 'all', @forceJs
     #application.users.bind 'change', @renderD3
-    #$(fakeUsers).each (a) ->
-      #a.users.create ({handle:@})
-
+  
     application.users.add handle:userHandle, {silent:true} for userHandle in fakeUsers
 
-    #@users.create('p')
-    @renderD3()
     @forceJs()
 
-  renderD3: ->
-    #console.log 'render data'
-    #application.users.forEach (individualUser) ->
-    #  console.log individualUser.get('handle')
-
+  
   forceJs: ->
+    console.log 'forceJs'
     width = 960
     height = 500
 
@@ -37,7 +30,8 @@ module.exports = class UsersView extends View
       .linkDistance(30)
       .size([width, height])
 
-    svg = d3.select("body").append("svg")
+    $('#forced-direct').empty()
+    svg = d3.select("#forced-direct").append("svg")
       .attr("width", width)
       .attr("height", height)
 
