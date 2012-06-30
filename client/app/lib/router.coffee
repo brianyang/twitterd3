@@ -8,3 +8,4 @@ module.exports = class Router extends Backbone.Router
     #$('body').append application.homeView.render().el
     console.log 'router home'
     $('body').append application.termView.render().el
+    #$('body').append application.usersView.render().el
