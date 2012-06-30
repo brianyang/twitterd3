@@ -23,14 +23,10 @@ module.exports = class UsersView extends View
 
   renderD3: ->
     #console.log 'render data'
-    #console.log application.users
-    application.users.forEach (individualUser) ->
-      console.log individualUser.get('handle')
-      #console.log @.models[0].attributes.handle
-    console.log 'render d3'
+    #application.users.forEach (individualUser) ->
+    #  console.log individualUser.get('handle')
 
   forceJs: ->
-    console.log 'force js'
     width = 960
     height = 500
 
@@ -49,12 +45,13 @@ module.exports = class UsersView extends View
     links = []
 
     application.users.forEach (individualUser) ->
+      idx = nodes.length
       newNode =
-        index : nodes.length
-        x : width/2 + nodes.length
-        y : height/2
-        px : width/2 + nodes.length
-        py : height/2
+        index : idx
+        x : width/2 + idx
+        y : height/2 + idx*idx      # square it so points don't end up on a line
+        px : width/2 + idx
+        py : height/2 + idx*idx
         fixed : false
         weight : 2      # number of edges, we're in a circle for now
         handle : individualUser.get('handle')
@@ -63,26 +60,22 @@ module.exports = class UsersView extends View
       newLink =
         source : links.length
         target : (links.length + 1) % application.users.length
-   #   console.log "newLink" 
-    #  console.log newLink
       links.push newLink
 
-   # console.log nodes
-   # console.log "links"
-   # console.log links
 
     force
       .nodes(nodes)
       .links(links)
       .start()
-   # console.log force.nodes(nodes).links(link).start()
 
     link = svg.selectAll("line.link")
       .data(links)
       .enter().append("line")
       .attr("class", "link")
-      .style "stroke-width", (d) ->  
-        Math.sqrt(4)
+      .style "stroke", (d) -> 
+        "#999"
+      .style "stroke-width", (d) -> 
+        2
 
     node = svg.selectAll("circle.node")
       .data(nodes)
@@ -90,8 +83,16 @@ module.exports = class UsersView extends View
       .attr("class", "node")
       .attr("r", 5)
       .style "fill", (d) -> 
-        color(2)
+          color(2)
       .call(force.drag)
+
+    circles = svg.selectAll("circle").each (d) ->
+        d.textEl = svg.append("svg:text")
+        .attr("x", d.x+10)
+        .attr("y", d.y+10)
+        .style("font-size", "18 px")
+        .style("fill", "#5C5C5C").text => d.handle
+         
 
     force.on "tick", ->
       link.attr("x1", (d) -> d.source.x)
@@ -101,6 +102,13 @@ module.exports = class UsersView extends View
 
       node.attr("cx", (d) -> d.x )
           .attr("cy", (d) -> d.y )
+
+      circles.each (d)  -> 
+        c = d3.select(this)
+        d.textEl
+            .attr("x", c.attr("cx"))
+            .attr("y", c.attr("cy"))   
+          
 
 
 
