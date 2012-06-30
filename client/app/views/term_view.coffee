@@ -4,7 +4,6 @@ template = require 'views/templates/term'
 Term = require 'models/term'
 
 module.exports = class TermView extends View
-  #model: Term
   id: 'term-view'
   template: template
 
@@ -15,14 +14,12 @@ module.exports = class TermView extends View
     @model = new Term
     @model.view = this
     @model.bind 'change', @render
-    console.log 'init change'
-    #console.log @model
 
   termBtnEvent: ->
     #console.log 'term btn event'
     termInputVal = $('#term-input').val()
     #@model.set({term:termInputVal})
-    #console.log 'at model' + @model
+    #console.log 'at model' + @mode
     #console.log application
     #console.log application.terms
     @model.set({searchword:termInputVal})

@@ -62,7 +62,6 @@ module.exports = class UsersView extends View
         target : (links.length + 1) % application.users.length
       links.push newLink
 
-
     force
       .nodes(nodes)
       .links(links)
@@ -72,9 +71,9 @@ module.exports = class UsersView extends View
       .data(links)
       .enter().append("line")
       .attr("class", "link")
-      .style "stroke", (d) -> 
+      .style "stroke", (d) ->
         "#999"
-      .style "stroke-width", (d) -> 
+      .style "stroke-width", (d) ->
         2
 
     node = svg.selectAll("circle.node")
@@ -82,7 +81,7 @@ module.exports = class UsersView extends View
       .enter().append("circle")
       .attr("class", "node")
       .attr("r", 5)
-      .style "fill", (d) -> 
+      .style "fill", (d) ->
           color(2)
       .call(force.drag)
 
@@ -92,7 +91,7 @@ module.exports = class UsersView extends View
         .attr("y", d.y+10)
         .style("font-size", "18 px")
         .style("fill", "#5C5C5C").text => d.handle
-         
+
 
     force.on "tick", ->
       link.attr("x1", (d) -> d.source.x)
@@ -103,12 +102,12 @@ module.exports = class UsersView extends View
       node.attr("cx", (d) -> d.x )
           .attr("cy", (d) -> d.y )
 
-      circles.each (d)  -> 
+      circles.each (d)  ->
         c = d3.select(this)
         d.textEl
             .attr("x", c.attr("cx"))
-            .attr("y", c.attr("cy"))   
-          
+            .attr("y", c.attr("cy"))
+
 
 
 
